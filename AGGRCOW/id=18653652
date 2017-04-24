@@ -1,0 +1,68 @@
+#include <bits/stdc++.h>
+typedef long long ll;
+#define get(a) scanf("%lld", &a)
+#define repVector(v)  for( auto it = v.begin(); it != v.end(); it++ )
+#define all(c) (c).begin(), (c).end()
+#define pb push_back
+#define FOR(i,a,b) for( ll i = a; i <= b; i++ )
+#define ROF(i,a,b) for( ll i = a; i >= b; i-- )
+#define debug(x) cerr << "[DEBUG] " << #x << " = " << x << endl
+#define matrix vector< vector<ll> >
+#define F first
+#define S second
+#define mp make_pair
+#define L 2*r
+#define R 2*r+1
+#define INPFILE freopen("input.in","r",stdin)
+#define BOOST ios_base::sync_with_stdio(false); cin.tie(NULL)
+using namespace std;
+
+vector<ll> v;
+
+bool F(ll distance, ll cows)
+{
+	ll lastpostion = v[0];
+	ll count = 1;
+	for(ll i = 1; i < v.size(); i++)
+	{
+		if(v[i] - lastpostion >= distance)
+		{ 
+			count++;
+			if(count == cows)
+				return true;
+			lastpostion = v[i];
+		}
+	}
+	return false;
+}
+
+int main()
+{
+	ll t; cin >> t;
+	while(t--)
+	{
+		ll n,c; 
+		cin>>n>>c;
+		v.clear();
+		for(ll i = 0; i < n; i++)
+		{
+			ll x; 
+			cin >> x;
+			v.pb(x);
+		}
+		sort(all(v));
+		ll low = INT_MAX;
+		for(ll i = 0; i <= n-2; i++)
+			low = min(low,v[i+1]-v[i]);
+		ll high = v[n-1] - v[0] + 1;
+		while(low < high)
+		{
+			ll x = low + (high - low + 1)/2;//low+(high-low+1)/2
+			if(F(x,c))
+				low = x;
+			else 
+				high = x - 1;
+		}
+		cout << high << '\n';
+	}	
+}
